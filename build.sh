@@ -1,4 +1,11 @@
-# Assuming your build script is named 'build.sh' and 'Readme.txt' is the instructions file
-git add build.sh Readme.txt
-git commit -m "Add build automation script and instructions"
-git push origin master
+#!/bin/bash
+echo "Running tests..."
+python -m unittest test.py
+if [ $? -eq 0 ]
+then
+    echo "Tests passed. Creating deployable application package..."
+    pip install pyinstaller
+    pyinstaller --onefile egg_catcher.py
+else
+    echo "Tests failed. Fix the issues before creating the application package."
+    exit 1
